@@ -9,6 +9,7 @@ from tqdm import tqdm
 from utils import *
 from config import *
 
+
 if __name__ == '__main__':
     args = option.parser.parse_args()
     config = Config(args)
