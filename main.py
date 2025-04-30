@@ -22,7 +22,13 @@ if __name__ == '__main__':
         sb_pt_name = args.emb_folder[11:]  # sent_emb_n_XXX
     print("Using SwinBERT pre-trained model: ", sb_pt_name)
     viz_name = '{}-{}-{}-{}-{}-{}-{}-{}-{}'.format(args.dataset, args.feature_group, text_opt, args.fusion, args.normal_weight, args.abnormal_weight, extra_loss_opt, args.alpha, sb_pt_name)
-    viz = Visualizer(env=viz_name, use_incoming_socket=False)
+    # viz = Visualizer(env=viz_name, use_incoming_socket=False)
+    try:
+        viz = Visualizer(env=viz_name, use_incoming_socket=False)
+    except Exception as e:
+        print("Visdom server not found -- running without visualization.")
+        viz = None  # Or use a dummy object that does nothing
+
     # Dataloader for normal videos
     train_nloader = DataLoader(Dataset(args, test_mode=False, is_normal=True),
                                batch_size=args.batch_size, shuffle=True,
@@ -37,8 +43,11 @@ if __name__ == '__main__':
 
     model = Model(args)
     if args.pretrained_ckpt is not None:
-        print("Loading pretrained model " + args.pretrained_model)
-        model.load_state_dict(torch.load(args.pretrained_model))
+        # print("Loading pretrained model " + args.pretrained_model)
+        # model.load_state_dict(torch.load(args.pretrained_model))
+        print("Loading pretrained model " + args.pretrained_ckpt)
+        model.load_state_dict(torch.load(args.pretrained_ckpt))
+
     # for name, value in model.named_parameters():
     #     print(name)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
