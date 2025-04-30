@@ -24,7 +24,7 @@ if __name__ == '__main__':
     viz_name = '{}-{}-{}-{}-{}-{}-{}-{}-{}'.format(args.dataset, args.feature_group, text_opt, args.fusion, args.normal_weight, args.abnormal_weight, extra_loss_opt, args.alpha, sb_pt_name)
     # viz = Visualizer(env=viz_name, use_incoming_socket=False)
     try:
-        viz = Visualizer(env=viz_name, use_incoming_socket=False)
+        viz = None #Visualizer(env=viz_name, use_incoming_socket=False)
     except Exception as e:
         print("Visdom server not found -- running without visualization.")
         viz = None  # Or use a dummy object that does nothing
