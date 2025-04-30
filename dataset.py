@@ -84,6 +84,8 @@ class Dataset(data.Dataset):
         elif self.feat_ver == 'v3':
             i3d_path = i3d_path.replace('i3d_v1', 'i3d_v3')
 
+        i3d_path = i3d_path.replace("/home/acsguser/Codes/RTFM", "/kaggle/working")
+
         features = np.load(i3d_path, allow_pickle=True)
         features = np.array(features, dtype=np.float32)
         kaggle="/kaggle/working/"
@@ -95,7 +97,9 @@ class Dataset(data.Dataset):
         elif 'violence' in self.dataset:
             text_path = "save/Violence/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
         elif 'ped2' in self.dataset:
-            text_path = kaggle+"save/UCSDped2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
+            # text_path = kaggle+"save/UCSDped2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
+            text_path = i3d_path.replace("ped2_ten_crop_i3d", f"{self.emb_folder}").replace("_i3d.npy", "emb.npy")
+
         elif 'TE2' in self.dataset:
             text_path = "save/TE2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
         else:
@@ -148,3 +152,23 @@ class Dataset(data.Dataset):
 
     def get_num_frames(self):
         return self.num_frame
+
+
+
+def __getitem__(self, index):
+    label = self.get_label()
+    i3d_path = self.list[index].strip()
+
+    # Fix 1: update hardcoded base path to real path
+    i3d_path = i3d_path.replace("/home/acsguser/Codes/RTFM", "/kaggle/working")
+
+    features = np.load(i3d_path, allow_pickle=True)
+    features = np.array(features, dtype=np.float32)
+
+    # Fix 2: build text_path using /kaggle/working as base
+    # e.g. for ped2
+    text_path = i3d_path.replace("ped2_ten_crop_i3d", f"{self.emb_folder}").replace("_i3d.npy", "emb.npy")
+    # If that's not accurate for the actual emb folder, use this:
+    # text_path = "/kaggle/working/save/UCSDped2/{}/{}/emb.npy".format(self.emb_folder, os.path.basename(i3d_path)[:-7])
+
+    text_features = np.load(text_path, allow_pickle=True)
