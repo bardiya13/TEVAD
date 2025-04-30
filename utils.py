@@ -96,10 +96,12 @@ def modelsize(model, input, type_size=4):
 
 
 def save_best_record(test_info, file_path, metrics):
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
     fo = open(file_path, "w")
     fo.write("epoch: {}\n".format(test_info["epoch"][-1]))
     fo.write(metrics + ": " +str(test_info[metrics][-1]))
     fo.close()
+
 
 
 def vid_name_to_path(vid_name, mode):  # TODO: change absolute paths! (only used by visual codes)
