@@ -41,6 +41,13 @@ if __name__ == '__main__':
                               batch_size=1, shuffle=False,
                               num_workers=0, pin_memory=False, generator=torch.Generator(device='cuda'))
 
+    for i, a in enumerate(train_nloader):
+        print("train_n", i)
+    for i, a in enumerate(train_aloader):
+        print("train_a", i)
+    for i, a in enumerate(test_loader):
+        print("test", i)
+    exit(0)
     model = Model(args)
     if args.pretrained_ckpt is not None:
         # print("Loading pretrained model " + args.pretrained_model)

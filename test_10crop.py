@@ -37,10 +37,14 @@ def test(dataloader, model, args, viz, device):
         print('ap : ' + str(ap))
         print('auc : ' + str(rec_auc))
 
-        viz.plot_lines('pr_auc', pr_auc)
-        viz.plot_lines('auc', rec_auc)
-        viz.lines('scores', pred)
-        viz.lines('roc', tpr, fpr)
+        if viz is not None:
+            try:
+                viz.plot_lines('pr_auc', pr_auc)
+                viz.plot_lines('auc', rec_auc)
+                viz.lines('scores', pred)
+                viz.lines('roc', tpr, fpr)
+            except:
+                print("error in test viz")
 
         if args.save_test_results:
             np.save('results/' + args.dataset + '_pred.npy', pred)

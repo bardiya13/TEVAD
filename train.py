@@ -120,10 +120,13 @@ def train(nloader, aloader, model, args, optimizer, viz, device):
         else:
             cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
 
-        viz.plot_lines('loss', cost.item())
-        viz.plot_lines('smooth loss', loss_smooth.item())
-        viz.plot_lines('sparsity loss', loss_sparse.item())
-
+        if viz is not None:
+            try:
+                viz.plot_lines('loss', cost.item())
+                viz.plot_lines('smooth loss', loss_smooth.item())
+                viz.plot_lines('sparsity loss', loss_sparse.item())
+            except:
+                print("no vis in train")
         optimizer.zero_grad()  # 将模型的参数梯度初始化为0
         cost.backward()  # 反向传播计算梯度
         optimizer.step()  # 更新所有参数
