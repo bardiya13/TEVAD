@@ -38,7 +38,7 @@ class Visualizer(object):
 def process_feat(feat, length):
     new_feat = np.zeros((length, feat.shape[1])).astype(np.float32)
 
-    r = np.linspace(0, len(feat), length + 1, dtype=np.int)  # len=33,存入要取的frame index
+    r = np.linspace(0, len(feat), length + 1, dtype=int)  # len=33,存入要取的frame index
     for i in range(length):
         if r[i] != r[i + 1]:
             new_feat[i, :] = np.mean(feat[r[i]:r[i + 1], :], 0)  # r[i]:r[i+1]这些feat求平均
