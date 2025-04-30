@@ -98,7 +98,7 @@ class Dataset(data.Dataset):
             text_path = "save/Violence/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
         elif 'ped2' in self.dataset:
             # text_path = kaggle+"save/UCSDped2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
-            text_path = i3d_path.replace("ped2_ten_crop_i3d", f"{self.emb_folder}").replace("_i3d.npy", "emb.npy")
+            text_path = i3d_path.replace("ped2_ten_crop_i3d", f"{self.emb_folder}").replace("_i3d.npy", "_emb.npy")
 
         elif 'TE2' in self.dataset:
             text_path = "save/TE2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
