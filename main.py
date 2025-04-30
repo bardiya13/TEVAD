@@ -47,6 +47,7 @@ if __name__ == '__main__':
     if not os.path.exists('./ckpt'):
         os.makedirs('./ckpt')
 
+
     optimizer = optim.Adam(model.parameters(),
                             lr=config.lr[0], weight_decay=0.005)  # default lr=0.001
 
