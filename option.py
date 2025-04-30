@@ -4,7 +4,7 @@ parser = argparse.ArgumentParser(description='RTFM')
 parser.add_argument('--feat-extractor', default='i3d', choices=['i3d', 'c3d'])
 parser.add_argument('--feature-size', type=int, default=2048, help='size of feature (default: 2048)')
 parser.add_argument('--modality', default='RGB', help='the type of the input, RGB,AUDIO, or MIX')
-# parser.add_argument('--rgb-list', default='list/shanghai-i3d-train-10crop.list', help='list of rgb features ')
+parser.add_argument('--rgb-list', default='/kaggle/working/TEVAD/list/ped2-i3d.list', help='list of rgb features ')
 parser.add_argument('--test-rgb-list', default="/kaggle/working/TEVAD/list/ped2-i3d-test.list", help='list of test rgb features ')
 parser.add_argument('--gt', default="/kaggle/working/TEVAD/list/gt-ped2.npy", help='file of ground truth ')
 parser.add_argument('--gpus', default=1, type=int, choices=[0], help='gpus')
@@ -27,7 +27,8 @@ parser.add_argument('--aggregate_text', action='store_true', default=False, help
 parser.add_argument('--extra_loss', action='store_true', default=False, help='whether to use extra loss')
 parser.add_argument('--save_test_results', action='store_true', default=False, help='whether to save test results')
 parser.add_argument('--alpha', type=float, default=0.0001, help='weight for RTFM loss')
-parser.add_argument('--emb_folder', type=str, default='sent_emb_n', help='folder for text embeddings, used to differenciate different swinbert pretrained models')
+parser.add_argument('--emb_folder', type=str, default='sent_emb_n/sent_emb_n', help='folder for text embeddings, used to differenciate different swinbert pretrained models')
 parser.add_argument('--emb_dim', type=int, default=768, help='dimension of text embeddings')
 
 
+#/kaggle/working/save/UCSDped2/sent_emb_n/sent_emb_n/Test001_emb.npy

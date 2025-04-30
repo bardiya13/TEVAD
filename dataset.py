@@ -74,109 +74,48 @@ class Dataset(data.Dataset):
             else:
                 raise Exception("Dataset undefined!!!")
 
-    # def __getitem__(self, index):
-    #
-    #     label = self.get_label()  # get video level label 0/1
-    #     i3d_path = self.list[index].strip('\n')
-    #
-    #     if self.feat_ver == 'v2':
-    #         i3d_path = i3d_path.replace('i3d_v1', 'i3d_v2')
-    #     elif self.feat_ver == 'v3':
-    #         i3d_path = i3d_path.replace('i3d_v1', 'i3d_v3')
-    #
-    #     features = np.load(i3d_path, allow_pickle=True)
-    #     features = np.array(features, dtype=np.float32)
-    #
-    #     if 'ucf' in self.dataset:
-    #         text_path = "save/Crime/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
-    #     elif 'shanghai' in self.dataset:
-    #         text_path = "save/Shanghai/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
-    #     elif 'violence' in self.dataset:
-    #         text_path = "save/Violence/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
-    #     elif 'ped2' in self.dataset:
-    #         text_path = "save/UCSDped2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
-    #     elif 'TE2' in self.dataset:
-    #         text_path = "save/TE2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
-    #     else:
-    #         raise Exception("Dataset undefined!!!")
-    #     text_features = np.load(text_path, allow_pickle=True)
-    #     text_features = np.array(text_features, dtype=np.float32)  # [snippet no., 768]
-    #     # assert features.shape[0] == text_features.shape[0]
-    #     if self.feature_size == 1024:
-    #         text_features = np.tile(text_features, (5, 1, 1))  # [10,snippet no.,768]
-    #     elif self.feature_size == 2048:
-    #         text_features = np.tile(text_features, (10, 1, 1))  # [10,snippet no.,768]
-    #     else:
-    #         raise Exception("Feature size undefined!!!")
-    #
-    #     if self.tranform is not None:
-    #         features = self.tranform(features)
-    #
-    #     if self.test_mode:
-    #         text_features = text_features.transpose(1, 0, 2)  # [snippet no.,10,768]
-    #         return features, text_features
-
     def __getitem__(self, index):
 
-            # Get the label (normal or abnormal)
-        label = self.get_label()
-
-            # 1. Define the base Kaggle path for your features
-        base_path = "/kaggle/input/your-dataset-name"  # Replace `your-dataset-name` with the actual Kaggle dataset name
-
+        label = self.get_label()  # get video level label 0/1
         i3d_path = self.list[index].strip('\n')
 
-            # Replace hardcoded paths with Kaggle paths
-            # Assuming features are saved in: "/kaggle/input/your-dataset-name/ped2_ten_crop_i3d/"
-        i3d_path = i3d_path.replace('/home/acsguser/Codes/RTFM/save/UCSDped2/ped2_ten_crop_i3d/',
-                                        f"{base_path}/ped2_ten_crop_i3d/")
+        if self.feat_ver == 'v2':
+            i3d_path = i3d_path.replace('i3d_v1', 'i3d_v2')
+        elif self.feat_ver == 'v3':
+            i3d_path = i3d_path.replace('i3d_v1', 'i3d_v3')
 
-            # 2. Load `i3d_path`, ensuring compatibility with your Kaggle file paths
         features = np.load(i3d_path, allow_pickle=True)
         features = np.array(features, dtype=np.float32)
-
-            # 3. Update text_path construction
-        if 'ped2' in self.dataset:
-                # Assuming text embeddings are saved in: "/kaggle/input/your-dataset-name/save/UCSDped2/"
-            text_path = f"{base_path}/save/UCSDped2/{self.emb_folder}/{i3d_path.split('/')[-1][:-7]}emb.npy"
+        kaggle="/kaggle/working/"
+#/kaggle/working/save/UCSDped2/sent_emb_n/sent_emb_n/Test001_emb.npy
+        if 'ucf' in self.dataset:
+            text_path = "save/Crime/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
+        elif 'shanghai' in self.dataset:
+            text_path = "save/Shanghai/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
+        elif 'violence' in self.dataset:
+            text_path = "save/Violence/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
+        elif 'ped2' in self.dataset:
+            text_path = kaggle+"save/UCSDped2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
+        elif 'TE2' in self.dataset:
+            text_path = "save/TE2/" + self.emb_folder + "/" + i3d_path.split("/")[-1][:-7]+"emb.npy"
         else:
             raise Exception("Dataset undefined!!!")
-
-            # Ensure text features load from the correct Kaggle path
         text_features = np.load(text_path, allow_pickle=True)
-        text_features = np.array(text_features, dtype=np.float32)
-
-            # Process text features based on feature size
+        text_features = np.array(text_features, dtype=np.float32)  # [snippet no., 768]
+        # assert features.shape[0] == text_features.shape[0]
         if self.feature_size == 1024:
-            text_features = np.tile(text_features, (5, 1, 1))  # [10, snippet no., 768]
+            text_features = np.tile(text_features, (5, 1, 1))  # [10,snippet no.,768]
         elif self.feature_size == 2048:
-            text_features = np.tile(text_features, (10, 1, 1))
+            text_features = np.tile(text_features, (10, 1, 1))  # [10,snippet no.,768]
         else:
             raise Exception("Feature size undefined!!!")
 
-            # Process 10-cropped snippet feature
-        if not self.test_mode:
-            features = features.transpose(1, 0, 2)  # [snippet no., 10, 2048] -> [10, snippet no., 2048]
-            divided_features = []
-            for feature in features:
-                feature = process_feat(feature, 32)
-                divided_features.append(feature)
-            divided_features = np.array(divided_features, dtype=np.float32)
+        if self.tranform is not None:
+            features = self.tranform(features)
 
-            div_feat_text = []
-            for text_feat in text_features:
-                text_feat = process_feat(text_feat, 32)  # [32, 768]
-                div_feat_text.append(text_feat)
-            div_feat_text = np.array(div_feat_text, dtype=np.float32)
-
-            assert divided_features.shape[1] == div_feat_text.shape[1], (
-                str(self.test_mode), divided_features.shape[1], div_feat_text.shape[1]
-            )
-            return divided_features, div_feat_text, label
-
-            # For test mode
-        text_features = text_features.transpose(1, 0, 2)  # [snippet no., 10, 768]
-        return features, text_features
+        if self.test_mode:
+            text_features = text_features.transpose(1, 0, 2)  # [snippet no.,10,768]
+            return features, text_features
 
         else:
             # process 10-cropped snippet feature
