@@ -19,8 +19,8 @@ parser.add_argument('--plot-freq', type=int, default=10, help='frequency of plot
 
 parser.add_argument('--seed', type=int, default=4869, help='random seed (default: 4869)')
 parser.add_argument('--max-epoch', type=int, default=1000, help='maximum iteration to train (default: 1000)')
-parser.add_argument('--feature-group', default='both', choices=['both', 'vis', 'text'], help='feature groups used for the model')
-parser.add_argument('--fusion', type=str, default='concat', help='how to fuse vis and text features')
+parser.add_argument('--feature-group', default='vis', choices=['both', 'vis', 'text'], help='feature groups used for the model')
+parser.add_argument('--fusion', type=str, default=None, help='how to fuse vis and text features')
 parser.add_argument('--normal_weight', type=float, default=1, help='weight for normal loss weights')
 parser.add_argument('--abnormal_weight', type=float, default=1, help='weight for abnormal loss weights')
 parser.add_argument('--aggregate_text', action='store_true', default=False, help='whether to aggregate text features')
