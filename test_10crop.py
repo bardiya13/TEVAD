@@ -12,6 +12,7 @@ def test(dataloader, model, args, viz, device):
         for i, (input, text) in enumerate(dataloader):  # test set has 199 videos
             input = input.to(device)
             input = input.permute(0, 2, 1, 3)
+            print(input.shape[2])
             text = text.to(device)
             text = text.permute(0, 2, 1, 3)
             # input.shape = (1,10,T,2048); T clips, each clip has 16frames, each frame has 10 crops
@@ -27,7 +28,10 @@ def test(dataloader, model, args, viz, device):
         gt = get_gt(args.dataset, args.gt)
 
         pred = list(pred.cpu().detach().numpy())
-        pred = np.repeat(np.array(pred), 16)  # 数组中的每个元素重复16遍，即同一个clip中的16帧共享相同的预测结果
+        pred = np.repeat(np.array(pred), 16)
+        # 数组中的每个元素重复16遍，即同一个clip中的16帧共享相同的预测结果
+        np.save('/kaggle/working/predictions.npy', pred)
+        np.save('/kaggle/working/ground_truth.npy', gt)
 
         fpr, tpr, threshold = roc_curve(list(gt), pred)
         precision, recall, th = precision_recall_curve(list(gt), pred)
