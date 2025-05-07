@@ -12,7 +12,7 @@ parser.add_argument('--lr', type=str, default='[0.001]*15000', help='learning ra
 parser.add_argument('--batch-size', type=int, default=32, help='number of instances in a batch of data (default: 16)')
 parser.add_argument('--workers', default=4, help='number of workers in dataloader')
 parser.add_argument('--model-name', default='rtfm', help='name to save model')
-parser.add_argument('--pretrained-ckpt', default="/kaggle/working/ckpt/my_best/ped2-both-text_agg-add-1-1-extra_loss-755-4869-i3d.pkl", help='ckpt for pretrained model')
+parser.add_argument('--pretrained-ckpt', default="/kaggle/input/tevad-ped2/ped2-both-text_agg-add-1-1-extra_loss-755-4869-i3d.pkl", help='ckpt for pretrained model')
 parser.add_argument('--num-classes', type=int, default=1, help='number of class')
 parser.add_argument('--dataset', default='ucf', help='dataset to train on (shanghai, ucf, ped2, violence, TE2)')
 parser.add_argument('--plot-freq', type=int, default=10, help='frequency of plotting (default: 10)')
